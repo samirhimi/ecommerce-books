@@ -60,5 +60,3 @@ A basic e-commerce web application for managing and selling books, built with **
    For a local MongoDB server, ensure it's running on mongodb://localhost:27017.
    For MongoDB Atlas, update the connection string in app.py
 
-   ```bash
-
