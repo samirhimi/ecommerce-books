@@ -1,11 +1,15 @@
-from flask import Flask, render_template, request, redirect, url_for, flash
+import os, urllib
+from flask import Flask, render_template, request, flash, session, redirect, url_for
 from flask_pymongo import PyMongo
-from bson.objectid import ObjectId
+from flask_session import Session
+from flask_bcrypt import Bcrypt
+from pymongo import MongoClient
+from bson.objectid import ObjectId 
+
 
 app = Flask(__name__)
-app.config["MONGO_URI"] = "mongodb://localhost:27017/bookstore"
-app.secret_key = 'your_secret_key'
-
+app.config["MONGO_URI"] = "mongodb://root:root@localhost:27017/bookstore"
+app.secret_key = os.getenv('SECRET_KEY', 'default_fallback_secret_key')
 mongo = PyMongo(app)
 
 # Home Page
@@ -34,7 +38,6 @@ def add_book():
         price = float(request.form['price'])
         description = request.form['description']
         stock = int(request.form['stock'])
-
         mongo.db.books.insert_one({
             'title': title,
             'author': author,

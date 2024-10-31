@@ -57,6 +57,28 @@ A basic e-commerce web application for managing and selling books, built with **
    pip install -r requirements.txt
 3. **Start the MongoDB Server:**
 
-   For a local MongoDB server, ensure it's running on mongodb://localhost:27017.
-   For MongoDB Atlas, update the connection string in app.py
+   - For a local MongoDB server, ensure it's running on mongodb://localhost:27017.
+   - For MongoDB Atlas, update the connection string in app.py
+   
+   ```bash
 
+   app.config["MONGO_URI"] = "your_mongodb_connection_string"
+
+
+4. **Run the Flask App:**
+
+   ```bash 
+   python app.py
+
+5. **Open the Application in Your Browser:**
+   
+   ```bash 
+   http://127.0.0.1:5000
+
+6. **Usage:**
+
+   1. **Home Page:** Displays a welcome message with links to the catalog.
+   2. **Books Page:** Lists all books with title, author, and price.
+   3. **Book Details:** Provides full details for a selected book, including stock availability.
+   4. **Add Book (Admin):** Admins can add new books with title, author, price, description, and stock.
+   5. **Delete Book (Admin):** Admins can remove books directly from the detail page.
