@@ -33,7 +33,6 @@ except ConnectionFailure as e:
 def index():
     return render_template('index.html')
 
-
 collection = db['books']
 books = collection.find()
 
@@ -47,36 +46,39 @@ def books():
 # Book detail page
 @app.route('/book/<book_id>')
 def book_detail(book_id):
-    book = mongo.db.books.find_one({'_id': ObjectId(book_id)})
+    _id = ObjectId(book_id)
+    book = collection.find_one({'_id': _id})
+    if book is None:
+        return "Book not found", 404
     return render_template('book_detail.html', book=book)
 
 # Add a new book (Admin only)
-@app.route('/add', methods=['GET', 'POST'])
-def add_book():
+@app.route('/add_book', methods=['GET', 'POST'])
+def add_book_form():
     if request.method == 'POST':
         title = request.form['title']
         author = request.form['author']
-        price = float(request.form['price'])
         description = request.form['description']
         stock = int(request.form['stock'])
         mongo.db.books.insert_one({
             'title': title,
             'author': author,
-            'price': price,
             'description': description,
             'stock': stock
         })
         flash('Book added successfully!')
         return redirect(url_for('books'))
-    
+
     return render_template('add_book.html')
 
+
 # Delete a book (Admin only)
-@app.route('/delete/<book_id>')
+@app.route("/delete_book/<book_id>", methods=["POST"])  
 def delete_book(book_id):
-    mongo.db.books.delete_one({'_id': ObjectId(book_id)})
-    flash('Book deleted successfully!')
-    return redirect(url_for('books'))
+    try:
+        mongo.db.books.delete_one({"_id": ObjectId(book_id)})
+    except Exception as e:
+        return f"An error occurred: {e}", 500
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run(debug=True, port=9000)
