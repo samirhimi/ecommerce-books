@@ -8,6 +8,8 @@ from bson.objectid import ObjectId
 
 
 app = Flask(__name__)
+app.secret_key = os.environ.get('SECRET_KEY')
+
 user = urllib.parse.quote_plus(os.environ.get('MONGO_USER'))
 password = urllib.parse.quote_plus(os.environ.get('MONGO_PASS'))
 
@@ -44,9 +46,9 @@ def books():
     return render_template('books.html', books=books)
 
 # Book detail page
-@app.route('/book/<book_id>')
-def book_detail(book_id):
-    _id = ObjectId(book_id)
+@app.route('/book/<id>')
+def book_detail(id):
+    _id = ObjectId(id)
     book = collection.find_one({'_id': _id})
     if book is None:
         return "Book not found", 404
@@ -60,11 +62,11 @@ def add_book_form():
         author = request.form['author']
         description = request.form['description']
         stock = int(request.form['stock'])
-        mongo.db.books.insert_one({
+        db.books.insert_one({
             'title': title,
             'author': author,
             'description': description,
-            'stock': stock
+            'stock': stock         
         })
         flash('Book added successfully!')
         return redirect(url_for('books'))
@@ -73,12 +75,11 @@ def add_book_form():
 
 
 # Delete a book (Admin only)
-@app.route("/delete_book/<book_id>", methods=["POST"])  
-def delete_book(book_id):
-    try:
-        mongo.db.books.delete_one({"_id": ObjectId(book_id)})
-    except Exception as e:
-        return f"An error occurred: {e}", 500
+@app.route('/book/<id>', methods=['POST'])
+def delete_book(id):
+    db.books.find_one_and_delete({'_id': ObjectId(id)})
+    flash('Book deleted successfully!')
+    return redirect(url_for('books'))
 
 if __name__ == '__main__':
     app.run(debug=True, port=9000)
