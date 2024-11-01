@@ -1,26 +1,54 @@
 import os, urllib
+from dotenv import load_dotenv
 from flask import Flask, render_template, request, flash, session, redirect, url_for
 from flask_pymongo import PyMongo
-from flask_session import Session
-from flask_bcrypt import Bcrypt
+from datetime import datetime
 from pymongo import MongoClient
+from pymongo.errors import ConnectionFailure
 from bson.objectid import ObjectId 
 
+# mongo_uri = "mongodb://root:root@localhost:27017"
 
 app = Flask(__name__)
-app.config["MONGO_URI"] = "mongodb://root:root@localhost:27017/bookstore"
-app.secret_key = os.getenv('SECRET_KEY', 'default_fallback_secret_key')
-mongo = PyMongo(app)
+user = urllib.parse.quote_plus(os.environ.get('MONGO_USER'))
+password = urllib.parse.quote_plus(os.environ.get('MONGO_PASS'))
+
+uri = "mongodb://{}:{}@localhost:27017".format(user, password, os.environ.get('MONGO_HOST'), os.environ.get('MONGO_PORT'))
+client = MongoClient(uri)
+db = client['bookstore']
+
+# Establish a connection to MongoDB
+try:
+    client = MongoClient(uri)
+    # The ismaster command is cheap and does not require auth.
+    client.admin.command('ismaster')
+    print("MongoDB connection successful!")
+
+    
+except ConnectionFailure as e:
+    print("MongoDB connection failed:", e)
+
+
+
+load_dotenv()
+mongo = PyMongo(app, uri=uri)
+
+
 
 # Home Page
 @app.route('/')
 def index():
     return render_template('index.html')
 
+
+collection = db['books']
+books = collection.find()
+
 # Display all books
+
 @app.route('/books')
 def books():
-    books = mongo.db.books.find()
+    books = collection.find()
     return render_template('books.html', books=books)
 
 # Book detail page
