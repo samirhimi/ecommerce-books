@@ -1,13 +1,11 @@
 import os, urllib
 from dotenv import load_dotenv
-from flask import Flask, render_template, request, flash, session, redirect, url_for
+from flask import Flask, render_template, request, flash, redirect, url_for
 from flask_pymongo import PyMongo
-from datetime import datetime
 from pymongo import MongoClient
 from pymongo.errors import ConnectionFailure
 from bson.objectid import ObjectId 
 
-# mongo_uri = "mongodb://root:root@localhost:27017"
 
 app = Flask(__name__)
 user = urllib.parse.quote_plus(os.environ.get('MONGO_USER'))
