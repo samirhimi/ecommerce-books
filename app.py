@@ -15,6 +15,9 @@ uri = "mongodb://{}:{}@localhost:27017".format(user, password, os.environ.get('M
 client = MongoClient(uri)
 db = client['bookstore']
 
+load_dotenv()
+mongo = PyMongo(app, uri=uri)
+
 # Establish a connection to MongoDB
 try:
     client = MongoClient(uri)
@@ -22,16 +25,8 @@ try:
     client.admin.command('ismaster')
     print("MongoDB connection successful!")
 
-    
 except ConnectionFailure as e:
     print("MongoDB connection failed:", e)
-
-
-
-load_dotenv()
-mongo = PyMongo(app, uri=uri)
-
-
 
 # Home Page
 @app.route('/')
