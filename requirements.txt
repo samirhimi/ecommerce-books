@@ -1,6 +1,6 @@
-Flask==2.0.1
-Flask-PyMongo==2.3.0
-pymongo==3.12.0
+Flask
+Flask-PyMongo
 python-dotenv
 pymongo[srv]
 flask-wtf
+psutil

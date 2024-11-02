@@ -1,0 +1,33 @@
+LICENCE
+README.md
+.gitignore
+# Ignore Git files and folders
+.git
+.gitignore
+
+# Node.js dependencies (for example if you’re using Docker to build and run Node.js apps)
+node_modules
+
+# Python virtual environments
+venv/
+.env/
+
+# Ignore temporary files and caches
+*.log
+*.tmp
+*.swp
+__pycache__/
+
+# Docker-specific files
+.dockerignore
+Dockerfile*
+
+# IDE and editor files
+.vscode/
+.idea/
+*.sublime-project
+*.sublime-workspace
+
+# OS-specific files
+.DS_Store
+Thumbs.db
