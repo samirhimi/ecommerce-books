@@ -12,8 +12,10 @@ bookstore.secret_key = os.environ.get('SECRET_KEY')
 
 user = urllib.parse.quote_plus(os.environ.get('MONGO_USER'))
 password = urllib.parse.quote_plus(os.environ.get('MONGO_PASS'))
+host = os.environ.get('MONGO_HOST')
+port = os.environ.get('MONGO_PORT')
 
-uri = "mongodb://{}:{}@localhost:27017".format(user, password, os.environ.get('MONGO_HOST'), os.environ.get('MONGO_PORT'))
+uri = "mongodb://{}:{}@{}:{}".format(user, password, os.environ.get('MONGO_HOST'), os.environ.get('MONGO_PORT'))
 client = MongoClient(uri)
 db = client['bookstore']
 
@@ -106,4 +108,4 @@ def delete_book(id):
     return redirect(url_for('books'))
 
 if __name__ == '__main__':
-    bookstore.run(debug=True, port=5000)
+    bookstore.run(debug=True, host='0.0.0.0', port=5000)
