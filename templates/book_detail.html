@@ -8,8 +8,9 @@
     <h1>{{ book['title'] }}</h1>
     <p><strong>Author:</strong> {{ book['author'] }}</p>
     <p><strong>Description:</strong> {{ book['description'] }}</p>
+    <p><strong>Price:</strong> ${{ book['price'] }}</p>
     <p><strong>In Stock:</strong> {{ book['stock'] }}</p>
-     
+    <p><strong>id:</strong> {{ book['_id'] }}</p> 
     <form method="POST">
         <button type="submit">Delete Book</button>
     </form>

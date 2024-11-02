@@ -61,17 +61,41 @@ def add_book_form():
         title = request.form['title']
         author = request.form['author']
         description = request.form['description']
+        price = float(request.form['price'])
         stock = int(request.form['stock'])
         db.books.insert_one({
             'title': title,
             'author': author,
             'description': description,
+            'price': price,
             'stock': stock         
         })
         flash('Book added successfully!')
         return redirect(url_for('books'))
 
     return render_template('add_book.html')
+
+# Update a book (Admin only)
+@app.route('/update_book/<id>', methods=['GET', 'POST'])
+def update_book(id):
+    book = db.books.find_one({'_id': ObjectId(id)})
+    if request.method == 'POST':
+        title = request.form['title']
+        author = request.form['author']
+        description = request.form['description']
+        price = float(request.form['price'])
+        stock = int(request.form['stock'])
+        db.books.update_one({'_id': ObjectId(id)}, {'$set': {
+            'title': title,
+            'author': author,
+            'description': description,
+            'price': price,
+            'stock': stock
+        }})
+        flash('Book updated successfully!')
+        return redirect(url_for('books'))
+
+    return render_template('update_book.html', book=book)
 
 
 # Delete a book (Admin only)
