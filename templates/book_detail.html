@@ -12,7 +12,9 @@
     <p><strong>In Stock:</strong> {{ book['stock'] }}</p>
     <p><strong>id:</strong> {{ book['_id'] }}</p> 
     <form method="POST">
-        <button type="submit">Delete Book</button>
+        <button type="submit" style="background-color: red; color: white; border: none; padding: 8px 12px; cursor: pointer;">
+            Delete Book
+        </button>
     </form>
     <a href="/books">Back to Books</a>
 </body>
